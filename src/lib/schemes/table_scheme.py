@@ -32,12 +32,12 @@ TOPCAT = 1 #catid for "" - Used as default ref if real catid is unknown
 
 #structure.rdf
 aliases_t = Table('aliases', metadata,
-	Column('catid', Integer, ForeignKey('categories.catid'), primary_key=True),
-	Column('alias_catid', Integer, ForeignKey('categories.catid'), primary_key=True)
+	Column('catid', Integer, primary_key=True),
+	Column('alias_catid', Integer, primary_key=True)
 )
 
 altlangs_t = Table('altlangs', metadata,
-	Column('catid', Integer, ForeignKey('categories.catid'), primary_key=True),
+	Column('catid', Integer, primary_key=True),
 	Column('language', Unicode(255), primary_key=True),
 	Column('resource', Unicode(512))
 )
@@ -47,34 +47,33 @@ categories_t = Table('categories', metadata,
 	Column('catid', Integer, primary_key=True, nullable=False),
 	Column('Topic', Unicode(512)),
 	Column('Title', Unicode(255), index=True),
-	Column('Description', Text(65535)),
+	Column('Description', Text),
 	Column('lastupdate', Unicode(255)),
 	Column('letterbar', Boolean, default=False),
-	Column('fatherid', Integer, ForeignKey('categories.catid'), default=TOPCAT)
+	Column('fatherid', Integer, default=TOPCAT)
 )
 Index('idx_topic', categories_t.c.Topic, mysql_length=125)
 
 newsgroups_t = Table('newsgroups', metadata,
-	Column('catid', Integer, ForeignKey('categories.catid'), primary_key=True),
+	Column('catid', Integer, primary_key=True),
 	Column('newsgroup', Unicode(255), primary_key=True)
 )
 
 related_t = Table('related', metadata,
-	Column('catid', Integer, ForeignKey('categories.catid'), primary_key=True),
-	Column('rcatid', Integer, ForeignKey('categories.catid'), primary_key=True)
+	Column('catid', Integer, primary_key=True),
+	Column('rcatid', Integer, primary_key=True)
 )
 
 symbolics_t = Table('symbolics', metadata,
-	Column('catid', Integer, ForeignKey('categories.catid'), primary_key=True),
+	Column('catid', Integer, primary_key=True),
 	Column('symbol', Unicode(255)),
-	Column('scatid', Integer, ForeignKey('categories.catid'), primary_key=True)
+	Column('scatid', Integer, primary_key=True)
 )
 
 #content.rdf
 externalpages_t = Table('externalpages', metadata,
-	Column('catid', Integer, ForeignKey('categories.catid')),
-	Column('link', Unicode(750), index=True),
+	Column('catid', Integer),
+	Column('link', Unicode(750)),
 	Column('Title', Unicode(255), index=True),
-	Column('Description', Text(65535))
+	Column('Description', Text)
 )
-Index('idx_link', externalpages_t.c.link, mysql_length=60)
