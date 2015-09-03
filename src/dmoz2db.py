@@ -327,13 +327,13 @@ if __name__ == '__main__':
     error_handler = handler.DmozErrorHandler()
 
 
-    #structure_prehandler = handler.DmozPreStructureHandler(engine, options.topic_filter)
-    #with open(options.structure_file, 'r') as xmlstream:
-        #LOG.info('Starting first parse of {0}'.format(options.structure_file))
-        #firstparse_starttime = time.time()
-        #force_parse(xmlstream, structure_prehandler, error_handler)
-        #firstparse_duration = timedelta(seconds=(time.time()-firstparse_starttime))
-        #LOG.info('done - added all Topics to the database (took {0})'.format(firstparse_duration))
+    structure_prehandler = handler.DmozPreStructureHandler(engine, options.topic_filter)
+    with open(options.structure_file, 'r') as xmlstream:
+        LOG.info('Starting first parse of {0}'.format(options.structure_file))
+        firstparse_starttime = time.time()
+        force_parse(xmlstream, structure_prehandler, error_handler)
+        firstparse_duration = timedelta(seconds=(time.time()-firstparse_starttime))
+        LOG.info('done - added all Topics to the database (took {0})'.format(firstparse_duration))
 
     LOG.info('Generating father ids')
     idgen_starttime = time.time()
@@ -341,24 +341,24 @@ if __name__ == '__main__':
     idgen_duration = timedelta(seconds=(time.time()-idgen_starttime))
     LOG.info('Father id generation successful (took {0})'.format(idgen_duration))
 
-    #structure_handler = handler.DmozStructureHandler(engine, options.topic_filter)
+    structure_handler = handler.DmozStructureHandler(engine, options.topic_filter)
 
-    #with open(options.structure_file, 'r') as xmlstream:
-        #LOG.info('Starting second parse of {0}'.format(options.structure_file))
-        #secondparse_starttime = time.time()
-        #force_parse(xmlstream, structure_handler, error_handler)
-        #secondparse_duration = timedelta(seconds=(time.time()-secondparse_starttime))
-        #LOG.info('done - inserted additional topic-information to the database (took {0})'.format(secondparse_duration))
+    with open(options.structure_file, 'r') as xmlstream:
+        LOG.info('Starting second parse of {0}'.format(options.structure_file))
+        secondparse_starttime = time.time()
+        force_parse(xmlstream, structure_handler, error_handler)
+        secondparse_duration = timedelta(seconds=(time.time()-secondparse_starttime))
+        LOG.info('done - inserted additional topic-information to the database (took {0})'.format(secondparse_duration))
 
-    #content_handler = handler.DmozContentHandler(engine, options.topic_filter)
+    content_handler = handler.DmozContentHandler(engine, options.topic_filter)
 
-    #with open(options.content_file, 'r') as xmlstream:
-        #LOG.info('Starting parse of {0}'.format(options.content_file))
-        #contentparse_starttime = time.time()
-        #force_parse(xmlstream, content_handler, error_handler)
-        #contentparse_duration = timedelta(seconds=(time.time()-contentparse_starttime))
-        #LOG.info('done - inserted externalpage information to the database (took {0})'.format(contentparse_duration))
+    with open(options.content_file, 'r') as xmlstream:
+        LOG.info('Starting parse of {0}'.format(options.content_file))
+        contentparse_starttime = time.time()
+        force_parse(xmlstream, content_handler, error_handler)
+        contentparse_duration = timedelta(seconds=(time.time()-contentparse_starttime))
+        LOG.info('done - inserted externalpage information to the database (took {0})'.format(contentparse_duration))
 
-        ##full_duration = firstparse_duration + idgen_duration + secondparse_duration + contentparse_duration
-        #full_duration = contentparse_duration
-        #LOG.info('Import complete in {0}'.format(full_duration))
+        #full_duration = firstparse_duration + idgen_duration + secondparse_duration + contentparse_duration
+        full_duration = contentparse_duration
+        LOG.info('Import complete in {0}'.format(full_duration))
