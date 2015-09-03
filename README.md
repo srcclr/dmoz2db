@@ -12,9 +12,10 @@ Forked from [dmo2db](https://github.com/JoKnopp/dmoz2db).
 
 - Create database named `dmoz` `createdb dmoz`
 
-- Copy `db.sample.conf` to `db.conf` and update config
+- Copy `src/db.sample.conf` to `db.conf` and update config
 
 ```bash
+# Should be run from src folder
 python dmoz2db.py --keep-db -s structure.rdf.u8 -c content.rdf.u8
 ```
 
