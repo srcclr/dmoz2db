@@ -319,7 +319,6 @@ def add_father_ids(engine):
             sys.stdout.flush()
     print
 
-
 if __name__ == '__main__':
     parser = init_optionparser()
     (options, args) = parser.parse_args()
