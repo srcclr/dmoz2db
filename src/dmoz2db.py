@@ -219,6 +219,7 @@ def new_engine(cf):
         db_name = cf.get('Database', 'dbname')
         port = cf.get('Database', 'port')
         driver = cf.get('Database', 'driver')
+        use_socket = cf.get('Database', 'use_socket')
     except ConfigParser.NoOptionError, importantInfoMissing:
         try: #every necessary information present?
             assert(dialect)
@@ -246,7 +247,11 @@ def new_engine(cf):
         driver = '+' + driver
     if port:
         port = ':' + port
-    url = dialect + driver + '://' + user + ':' + pw + '@' + host + port + '/' + db_name
+
+    if use_socket:
+        url = dialect + driver + ':///' + db_name
+    else:
+        url = dialect + driver + '://' + user + ':' + pw + '@' + host + port + '/' + db_name
     try:
         #engine = create_engine(str(url + '?charset=utf8'), encoding=str('utf-8'))
         engine = create_engine(str(url), encoding=str('utf-8'))
@@ -313,7 +318,6 @@ def add_father_ids(engine):
                 sys.stdout.write(' - {0} ids generated\n'.format(counter))
             sys.stdout.flush()
     print
-    
 
 if __name__ == '__main__':
     parser = init_optionparser()
