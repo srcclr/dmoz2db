@@ -10,6 +10,7 @@ ALTER TABLE categories ADD COLUMN updated_at timestamp without time zone DEFAULT
 ALTER TABLE categories ALTER id DROP DEFAULT;
 DROP SEQUENCE categories_catid_seq;
 
+ALTER TABLE externalpages ADD COLUMN domain_name varchar(255);
 UPDATE externalpages SET domain_name = substring(link FROM '^(?:https?:\/\/)?(?:www\.)?([^\/]+)\/$');
 
 ALTER TABLE externalpages RENAME catid TO category_id;
