@@ -34,7 +34,7 @@ import logging
 import ConfigParser #for the database config file
 import time
 from datetime import timedelta
-from xml.sax import parse
+from xml.sax import parse, xmlreader
 
 from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
@@ -319,6 +319,12 @@ def add_father_ids(engine):
             sys.stdout.flush()
     print
 
+def encode_stream(stream):
+    input_source = xmlreader.InputSource()
+    input_source.setByteStream(stream)
+    input_source.setEncoding("latin-1")
+    return input_source
+
 if __name__ == '__main__':
     parser = init_optionparser()
     (options, args) = parser.parse_args()
@@ -330,12 +336,11 @@ if __name__ == '__main__':
     setup_db(engine, options.keep_db)
     error_handler = handler.DmozErrorHandler()
 
-
     structure_prehandler = handler.DmozPreStructureHandler(engine, options.topic_filter)
     with open(options.structure_file, 'r') as xmlstream:
         LOG.info('Starting first parse of {0}'.format(options.structure_file))
         firstparse_starttime = time.time()
-        force_parse(xmlstream, structure_prehandler, error_handler)
+        force_parse(encode_stream(xmlstream), structure_prehandler, error_handler)
         firstparse_duration = timedelta(seconds=(time.time()-firstparse_starttime))
         LOG.info('done - added all Topics to the database (took {0})'.format(firstparse_duration))
 
@@ -350,7 +355,7 @@ if __name__ == '__main__':
     with open(options.structure_file, 'r') as xmlstream:
         LOG.info('Starting second parse of {0}'.format(options.structure_file))
         secondparse_starttime = time.time()
-        force_parse(xmlstream, structure_handler, error_handler)
+        force_parse(encode_stream(xmlstream), structure_handler, error_handler)
         secondparse_duration = timedelta(seconds=(time.time()-secondparse_starttime))
         LOG.info('done - inserted additional topic-information to the database (took {0})'.format(secondparse_duration))
 
@@ -359,7 +364,7 @@ if __name__ == '__main__':
     with open(options.content_file, 'r') as xmlstream:
         LOG.info('Starting parse of {0}'.format(options.content_file))
         contentparse_starttime = time.time()
-        force_parse(xmlstream, content_handler, error_handler)
+        force_parse(encode_stream(xmlstream), content_handler, error_handler)
         contentparse_duration = timedelta(seconds=(time.time()-contentparse_starttime))
         LOG.info('done - inserted externalpage information to the database (took {0})'.format(contentparse_duration))
 
