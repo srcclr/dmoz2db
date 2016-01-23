@@ -61,7 +61,7 @@ class Link(object):
             conn.execute(ins_externalpage,
                         cid=self.catid,
                         lnk=self.link,
-                        lnktitle=self.title,
+                        lnktitle=self.title[:255],
                         descr=self.description
                         )
         except IntegrityError:
